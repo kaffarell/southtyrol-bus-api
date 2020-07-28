@@ -1,4 +1,4 @@
-# Southtyrol bus api
+# South Tyrol bus API
 Modern and easy to use wrapper for the [STA (Strutture Trasporto Alto Adige) API](https://data.civis.bz.it/de/dataset/southtyrolean-public-transport)
 
 ## Features
