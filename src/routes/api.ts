@@ -8,7 +8,7 @@ Router.get('/', (req: express.Request, res: express.Response) => {
     res.send("Api under Construction 🚧");
 });
 
-Router.post('/poi', (req: express.Request, res: express.Response) => {
+Router.post('/stopFinder', (req: express.Request, res: express.Response) => {
     findLocationAction(req, res);
 });
 

@@ -52,7 +52,7 @@ var Router = express.Router();
 Router.get('/', function (req, res) {
     res.send("Api under Construction 🚧");
 });
-Router.post('/poi', function (req, res) {
+Router.post('/stopFinder', function (req, res) {
     findLocationAction(req, res);
 });
 
