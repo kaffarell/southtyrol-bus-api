@@ -2,6 +2,7 @@
 Modern and easy to use wrapper for the [STA (Strutture Trasporto Alto Adige) API](https://data.civis.bz.it/de/dataset/southtyrolean-public-transport)
 
 ## Features
+Documentation can be found under docs/_build/html/index.html
  * StopFinderRequest (submit coordinates and you will get all the bus-stations near you)
  
  
