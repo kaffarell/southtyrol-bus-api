@@ -16,7 +16,7 @@ Documentation can be found under docs/_build/html/index.html
 
 ## Todo
  * [x] Implement StopFinderRequest (Get specific Location + Info about near bus stations)
- * [ ] Write Documentation
+ * [x] Write Documentation
  * [ ] Write Tests (jest)
  * [ ] TripRequest (Calculate Trip with begin coord. and end coord.)
 
