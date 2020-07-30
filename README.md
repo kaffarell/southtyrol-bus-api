@@ -11,6 +11,7 @@ Documentation can be found under docs/_build/html/index.html
  * Execute `npm install`
  * Execute `npm run build` to transpile ts and run the linter
  * Execute `npm start` to run the app
+ * Execute `make html` in the docs/ directory to build the documentation
 
 
 ## Todo
