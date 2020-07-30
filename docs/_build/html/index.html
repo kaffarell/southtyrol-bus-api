@@ -155,9 +155,14 @@
 <h1>South Tyrol Bus API<a class="headerlink" href="#south-tyrol-bus-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="stopfinder">
 <h2>StopFinder<a class="headerlink" href="#stopfinder" title="Permalink to this headline">¶</a></h2>
-<p>When using a stopFinderRequest you have to provide coordinates, and based on them
-you will receive the nearest Bus stations and other info.</p>
-<p>URL: <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:5000/api/stopFinder</span></code><br />METHOD: <code class="docutils literal notranslate"><span class="pre">POST</span></code><br />ARGUMENTS:<code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;lon&quot;:</span> <span class="pre">&quot;11.67458&quot;,</span> <span class="pre">&quot;lat&quot;:</span> <span class="pre">&quot;46.57325&quot;</span> <span class="pre">}</span></code><br />RESPONSE:</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:5000/api/stopFinder</span></code><br />METHOD: <code class="docutils literal notranslate"><span class="pre">POST</span></code><br />ARGUMENTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="s2">&quot;11.67458&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="s2">&quot;46.57325&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>RESPONSE:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
     <span class="p">{</span>
         <span class="s2">&quot;nearestStopName&quot;</span><span class="p">:</span> <span class="s2">&quot;Martin&quot;</span><span class="p">,</span>
@@ -170,6 +175,12 @@ you will receive the nearest Bus stations and other info.</p>
 <span class="p">]</span>
 </pre></div>
 </div>
+<p>When using a stopFinderRequest you have to provide coordinates, and based on them
+you will receive the nearest Bus stations and other info. When creating the post request you have to provide a body.
+The body consists of two variables: longitude and latitude. As a response you will get an array with all the bus
+stations that are withing a predefined radius from your coordinates. Like in the example response above the response contains
+the stop name the place where the stop is located, the distance in meters to the stop from your coordinates and the
+walking time to the stop. There are also fields with the nearest place and the nearest street(house).</p>
 </div>
 </div>
 
