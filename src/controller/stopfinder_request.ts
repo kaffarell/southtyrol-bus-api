@@ -1,5 +1,4 @@
 import request from 'request';
-import express from 'express';
 import * as xml2js from 'xml2js';
 
 interface stopFinderRequest {
@@ -12,13 +11,15 @@ interface stopFinderRequest {
     nearestStreet: string;
 }
 
+type extractDataFromXMLCallback = (stopRequest: Array<stopFinderRequest> | string) => void;
+type findLocationActionCallback = (stopRequest: Array<stopFinderRequest> | string) => void;
 
-function extractDataFromXML(res: express.Response, returnBody: string): void{
+
+function extractDataFromXML(returnBody: string, callback: extractDataFromXMLCallback): void{
     const parser = new xml2js.Parser();
     parser.parseString(returnBody, (err: string, data: any) => {
         if(err){
-            res.end(err);
-            res.sendStatus(500);
+            callback(err);
         }else{
             const usefulResponse = data.itdRequest.itdStopFinderRequest[0].itdOdv;
             const stopFinderRequestArray: Array<stopFinderRequest> = [];
@@ -34,25 +35,25 @@ function extractDataFromXML(res: express.Response, returnBody: string): void{
                 }
                 stopFinderRequestArray.push(newStopFinderRequest);
             } 
-            res.json(stopFinderRequestArray);
-
-        }
-    })
-}
-
-function findLocationAction(req: express.Request, res: express.Response): void{
-    const longitude: string = req.body.lon;
-    const latitude: string = req.body.lat;
-    let returnBody: string;
-    request('http://efa.sta.bz.it/apb/XML_STOPFINDER_REQUEST?locationServerActive=0&type_sf=coord&name_sf=' + longitude +':' + latitude +':WGS84[DD.DDDDD]', (reqErr, reqRes, reqBody) => {
-        if(reqErr){
-            res.sendStatus(500);
-            res.end(reqErr);
-        }else{
-            returnBody = reqBody;
-            extractDataFromXML(res, returnBody);
+            callback(stopFinderRequestArray);
         }
     });
 }
 
-export default findLocationAction;
+function findLocationAction(longitude: string, latitude: string, callback: findLocationActionCallback): void{
+
+        request('http://efa.sta.bz.it/apb/XML_STOPFINDER_REQUEST?locationServerActive=0&type_sf=coord&name_sf=' + longitude +':' + latitude +':WGS84[DD.DDDDD]', (reqErr, reqRes, reqBody) => {
+            if(reqErr){
+                callback(reqErr);
+            }else{
+                extractDataFromXML(reqBody, (stopRequest: Array<stopFinderRequest> | string) => {
+                    callback(stopRequest);
+                });
+            }
+        });
+}
+
+export {
+    findLocationAction,
+    stopFinderRequest
+}

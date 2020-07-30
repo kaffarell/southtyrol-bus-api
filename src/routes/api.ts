@@ -1,7 +1,8 @@
 import express from 'express';
-import findLocationAction from '../controller/stopfinder_request';
+import  { findLocationAction, stopFinderRequest } from '../controller/stopfinder_request';
 
 const Router: express.Router = express.Router();
+
 
 
 Router.get('/', (req: express.Request, res: express.Response) => {
@@ -9,7 +10,9 @@ Router.get('/', (req: express.Request, res: express.Response) => {
 });
 
 Router.post('/stopFinder', (req: express.Request, res: express.Response) => {
-    findLocationAction(req, res);
+    findLocationAction(req.body.lon, req.body.lat, (stopRequest: Array<stopFinderRequest> | string) => {
+        res.json(stopRequest);
+    });
 });
 
 export default Router;

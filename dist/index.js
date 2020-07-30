@@ -6,12 +6,11 @@ var express = _interopDefault(require('express'));
 var request = _interopDefault(require('request'));
 var xml2js = require('xml2js');
 
-function extractDataFromXML(res, returnBody) {
+function extractDataFromXML(returnBody, callback) {
     var parser = new xml2js.Parser();
     parser.parseString(returnBody, function (err, data) {
         if (err) {
-            res.end(err);
-            res.sendStatus(500);
+            callback(err);
         }
         else {
             var usefulResponse = data.itdRequest.itdStopFinderRequest[0].itdOdv;
@@ -28,22 +27,19 @@ function extractDataFromXML(res, returnBody) {
                 };
                 stopFinderRequestArray.push(newStopFinderRequest);
             }
-            res.json(stopFinderRequestArray);
+            callback(stopFinderRequestArray);
         }
     });
 }
-function findLocationAction(req, res) {
-    var longitude = req.body.lon;
-    var latitude = req.body.lat;
-    var returnBody;
+function findLocationAction(longitude, latitude, callback) {
     request('http://efa.sta.bz.it/apb/XML_STOPFINDER_REQUEST?locationServerActive=0&type_sf=coord&name_sf=' + longitude + ':' + latitude + ':WGS84[DD.DDDDD]', function (reqErr, reqRes, reqBody) {
         if (reqErr) {
-            res.sendStatus(500);
-            res.end(reqErr);
+            callback(reqErr);
         }
         else {
-            returnBody = reqBody;
-            extractDataFromXML(res, returnBody);
+            extractDataFromXML(reqBody, function (stopRequest) {
+                callback(stopRequest);
+            });
         }
     });
 }
@@ -53,7 +49,9 @@ Router.get('/', function (req, res) {
     res.send("Api under Construction 🚧");
 });
 Router.post('/stopFinder', function (req, res) {
-    findLocationAction(req, res);
+    findLocationAction(req.body.lon, req.body.lat, function (stopRequest) {
+        res.json(stopRequest);
+    });
 });
 
 var app = express();
