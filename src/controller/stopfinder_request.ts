@@ -53,8 +53,8 @@ function getXMLData(longitude: string, latitude: string): Promise<string>{
 }
 
 async function findLocationAction(longitude: string, latitude: string): Promise<Array<stopFinderRequest> | string>{
-    let xmlData = await getXMLData(longitude, latitude);
-    let processedData = await extractDataFromXML(xmlData);
+    const xmlData = await getXMLData(longitude, latitude);
+    const processedData = await extractDataFromXML(xmlData);
     return processedData;
 }
 
