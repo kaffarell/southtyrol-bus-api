@@ -10,9 +10,13 @@ Router.get('/', (req: express.Request, res: express.Response) => {
 });
 
 Router.post('/stopFinder', (req: express.Request, res: express.Response) => {
-    findLocationAction(req.body.lon, req.body.lat, (stopRequest: Array<stopFinderRequest> | string) => {
-        res.json(stopRequest);
-    });
+    findLocationAction(req.body.lon, req.body.lat)
+        .then((stops: Array<stopFinderRequest> | string) => {
+            res.json(stops);
+        })
+        .catch((err: string) => {
+            res.json(err);
+        });
 });
 
 export default Router;
