@@ -3,6 +3,29 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+
+  "jest": {
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "src/*.ts"
+    ],
+    "notify": true,
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.test.(ts|js)"
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
+  },
   "scripts": {
     "test": "jest",
     "start": "node dist/index",
@@ -29,6 +52,7 @@
     "jest": "^26.2.1",
     "rollup-plugin-eslint": "^7.0.0",
     "rollup-plugin-typescript2": "^0.27.1",
+    "ts-jest": "^26.1.4",
     "tslib": "^2.0.0",
     "typescript": "^3.9.7"
   }
