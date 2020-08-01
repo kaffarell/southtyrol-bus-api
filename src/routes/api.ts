@@ -10,9 +10,7 @@ Router.get('/', (req: express.Request, res: express.Response) => {
 });
 
 Router.post('/stopFinder', (req: express.Request, res: express.Response) => {
-    findLocationAction(req.body.lon, req.body.lat, (stopRequest: Array<stopFinderRequest> | string) => {
-        res.json(stopRequest);
-    });
+    res.json(findLocationAction(req.body.lon, req.body.lat));
 });
 
 export default Router;
