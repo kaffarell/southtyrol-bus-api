@@ -7,7 +7,7 @@ describe('Testing stopFinder', () => {
             .then((stop: Array<stopFinderRequest> | string) => {
                 if(typeof stop !== 'string'){
                     expect(stop[0].nearestStopName).toEqual('Martin');
-                    //expect(stops[0].stopId).toEqual('234');
+                    expect(stop[0].nearestStopId).toEqual('66002594');
                     expect(stop[0].nearestStopPlace).toEqual('St. Ulrich');
                     expect(stop[0].nearestStopDistance).toEqual('909');
                     expect(stop[0].nearestStopDistanceTime).toEqual('13');
@@ -23,15 +23,15 @@ describe('Testing stopFinder', () => {
                 if(typeof stops !== 'string'){
                     // Test all values from one stop and only the stopName from the others
                     expect(stops[0].nearestStopName).toEqual('Rodra');
-                    //expect(stops[0].stopId).toEqual('234');
+                    expect(stops[0].nearestStopId).toEqual('66002592');
                     expect(stops[0].nearestStopPlace).toEqual('St. Ulrich');
                     expect(stops[0].nearestStopDistance).toEqual('720');
                     expect(stops[0].nearestStopDistanceTime).toEqual('10');
                     expect(stops[0].nearestPlace).toEqual('St. Ulrich');
                     expect(stops[0].nearestStreet).toEqual('Streda Val D Anna 24');
 
-                    expect(stops[1].nearestStopName).toEqual('St. Ulrich, Cuca');
-                    expect(stops[2].nearestStopName).toEqual('St. Ulrich, Seceda');
+                    expect(stops[1].nearestStopId).toEqual('66002932');
+                    expect(stops[2].nearestStopId).toEqual('66002754');
                 }
             });
     });
