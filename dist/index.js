@@ -135,9 +135,31 @@ function extractDataFromXML$1(returnBody) {
                 reject(err);
             }
             else {
-                var usefuleResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
-                console.log(usefuleResponse.length);
-                resolve(usefuleResponse);
+                var usefulResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
+                var allTrips = {};
+                // Go trough all possible routes:
+                for (var i = 0; i < usefulResponse.length; i++) {
+                    console.log('Test');
+                    var currTrip = {};
+                    currTrip.totalTime = usefulResponse[i].$.publicDuration;
+                    currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
+                    var routeParts = {};
+                    for (var a = 0; a < usefulResponse[i].itdPartialRouteList.length; a++) {
+                        var parts = {};
+                        for (var b = 0; b < usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint.length; b++) {
+                            var point = {};
+                            point.name = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].name;
+                            point.usage = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].usage;
+                            point.locality = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].locality;
+                            parts.points.push(point);
+                        }
+                        parts.type = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdMeansOfTransport.productName;
+                        parts.distance = usefulResponse[i].itdPartialRouteList.itdPartialRoute.$.distance;
+                        routeParts.parts.push(parts);
+                    }
+                    allTrips.push(currTrip);
+                }
+                resolve(allTrips);
             }
         });
     });

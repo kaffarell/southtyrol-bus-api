@@ -43,9 +43,33 @@ function extractDataFromXML(returnBody: string){
             if(err){
                 reject(err);
             }else{
-                const usefuleResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
-                console.log(usefuleResponse.length);
-                resolve(usefuleResponse);
+                const usefulResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
+                const allTrips = {} as Array<Trip>;
+                // Go trough all possible routes:
+                
+                for(let i = 0; i < usefulResponse.length; i++){
+                    console.log('Test');
+                    const currTrip = {} as Trip;
+                    currTrip.totalTime = usefulResponse[i].$.publicDuration;
+                    currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
+                    const routeParts = {} as routeParts;
+                    for(let a = 0; a < usefulResponse[i].itdPartialRouteList.length; a++){
+                        const parts = {} as Parts;
+                        for(let b = 0; b < usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint.length; b++){
+                            const point = {} as Point;
+                            point.name = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].name;
+                            point.usage = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].usage;
+                            point.locality = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].locality;
+                            parts.points.push(point);
+                        }
+                        parts.type = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdMeansOfTransport.productName; 
+                        parts.distance = usefulResponse[i].itdPartialRouteList.itdPartialRoute.$.distance; 
+                        routeParts.parts.push(parts);
+                    }
+                    allTrips.push(currTrip);
+                    
+                }
+                resolve(allTrips);
                 
             }
         });
