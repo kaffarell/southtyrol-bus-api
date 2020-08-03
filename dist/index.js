@@ -115,6 +115,50 @@ function findLocationAction(longitude, latitude) {
     });
 }
 
+function getXMLData$1(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination) {
+    return new Promise(function (resolve, reject) {
+        request('http://efa.sta.bz.it/apb/XML_TRIP_REQUEST2?locationServerActive=1&type_origin=coord&name_origin=' + longitudeOrigin + ':' + latitudeOrigin + ':WGS84[DD.DDDDD]&type_destination=coord&name_destination=' + longitudeDestination + ':' + latitudeDestination + ':WGS84[DD.DDDDD]', function (reqErr, reqRes, reqBody) {
+            if (reqErr) {
+                reject(reqErr);
+            }
+            else {
+                resolve(reqBody);
+            }
+        });
+    });
+}
+function extractDataFromXML$1(returnBody) {
+    return new Promise(function (resolve, reject) {
+        var parser = new xml2js.Parser();
+        parser.parseString(returnBody, function (err, data) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                var usefuleResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
+                console.log(usefuleResponse.length);
+                resolve(usefuleResponse);
+            }
+        });
+    });
+}
+function findTripAction(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination) {
+    return __awaiter(this, void 0, void 0, function () {
+        var xmlData, processedData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getXMLData$1(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination)];
+                case 1:
+                    xmlData = _a.sent();
+                    return [4 /*yield*/, extractDataFromXML$1(xmlData)];
+                case 2:
+                    processedData = _a.sent();
+                    return [2 /*return*/, processedData];
+            }
+        });
+    });
+}
+
 var Router = express.Router();
 Router.get('/', function (req, res) {
     res.send("Api under Construction 🚧");
@@ -123,6 +167,15 @@ Router.post('/stopFinder', function (req, res) {
     findLocationAction(req.body.lon, req.body.lat)
         .then(function (stops) {
         res.json(stops);
+    })
+        .catch(function (err) {
+        res.json(err);
+    });
+});
+Router.post('/tripFinder', function (req, res) {
+    findTripAction(req.body.lon_or, req.body.lat_or, req.body.lon_dest, req.body.lat_dest)
+        .then(function (trips) {
+        res.json(trips);
     })
         .catch(function (err) {
         res.json(err);
