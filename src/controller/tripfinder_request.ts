@@ -1,26 +1,23 @@
 import request from 'request';
 import * as xml2js from 'xml2js';
 
-interface Point {
-    name: string;
-    usage: string;
-    locality: string;
+class Point {
+    name: string = '';
+    usage: string = '';
+    locality: string = '';
 }
 
-interface routeParts {
-    parts: Array<Parts>;
+class Part {
+    distance: string = '';
+    type: string = '';
+    points: Array<Point> = [];
+
 }
 
-interface Parts {
-    distance: string;
-    type: string;
-    points: Array<Point>;
-}
-
-interface Trip {
-    totalTime: string;
-    vehicleTime: string;
-    routeParts: routeParts; 
+class Trip {
+    totalTime: string = '';
+    vehicleTime: string = '';
+    routeParts: Array<Part> = []; 
 }
 
 
@@ -36,6 +33,7 @@ function getXMLData(longitudeOrigin: string, latitudeOrigin: string, longitudeDe
     });
 }
 
+
 function extractDataFromXML(returnBody: string){
     return new Promise<Array<Trip> | string>((resolve, reject) => {
         const parser = new xml2js.Parser();
@@ -44,27 +42,24 @@ function extractDataFromXML(returnBody: string){
                 reject(err);
             }else{
                 const usefulResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
-                const allTrips = {} as Array<Trip>;
                 // Go trough all possible routes:
-                
+                let allTrips: Array<Trip> = []; 
                 for(let i = 0; i < usefulResponse.length; i++){
-                    console.log('Test');
-                    const currTrip = {} as Trip;
+                    let currTrip: Trip = new Trip();
                     currTrip.totalTime = usefulResponse[i].$.publicDuration;
                     currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
-                    const routeParts = {} as routeParts;
                     for(let a = 0; a < usefulResponse[i].itdPartialRouteList.length; a++){
-                        const parts = {} as Parts;
+                        let currPart: Part = new Part();
                         for(let b = 0; b < usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint.length; b++){
-                            const point = {} as Point;
-                            point.name = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].name;
-                            point.usage = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].usage;
-                            point.locality = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint[b].locality;
-                            parts.points.push(point);
+                            let currPoint: Point = new Point();
+                            currPoint.name = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].name;
+                            currPoint.usage = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].usage;
+                            currPoint.locality = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].locality;
+                            currPart.points.push(currPoint);
                         }
-                        parts.type = usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdMeansOfTransport.productName; 
-                        parts.distance = usefulResponse[i].itdPartialRouteList.itdPartialRoute.$.distance; 
-                        routeParts.parts.push(parts);
+                        currPart.type = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdMeansOfTransport.productName; 
+                        currPart.distance = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.$.distance; 
+                        currTrip.routeParts.push(currPart);
                     }
                     allTrips.push(currTrip);
                     
