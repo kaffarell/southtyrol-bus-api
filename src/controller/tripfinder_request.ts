@@ -43,22 +43,22 @@ function extractDataFromXML(returnBody: string){
             }else{
                 const usefulResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
                 // Go trough all possible routes:
-                let allTrips: Array<Trip> = []; 
+                const allTrips: Array<Trip> = []; 
                 for(let i = 0; i < usefulResponse.length; i++){
-                    let currTrip: Trip = new Trip();
+                    const currTrip: Trip = new Trip();
                     currTrip.totalTime = usefulResponse[i].$.publicDuration;
                     currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
-                    for(let a = 0; a < usefulResponse[i].itdPartialRouteList.length; a++){
-                        let currPart: Part = new Part();
-                        for(let b = 0; b < usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint.length; b++){
-                            let currPoint: Point = new Point();
-                            currPoint.name = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].name;
-                            currPoint.usage = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].usage;
-                            currPoint.locality = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].locality;
+                    for(let a = 0; a < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute.length; a++){
+                        const currPart: Part = new Part();
+                        for(let b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++){
+                            const currPoint: Point = new Point();
+                            currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].name;
+                            currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].usage;
+                            currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].locality;
                             currPart.points.push(currPoint);
                         }
-                        currPart.type = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdMeansOfTransport.productName; 
-                        currPart.distance = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.$.distance; 
+                        currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName; 
+                        currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance; 
                         currTrip.routeParts.push(currPart);
                     }
                     allTrips.push(currTrip);

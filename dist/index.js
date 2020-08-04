@@ -115,6 +115,30 @@ function findLocationAction(longitude, latitude) {
     });
 }
 
+var Point = /** @class */ (function () {
+    function Point() {
+        this.name = '';
+        this.usage = '';
+        this.locality = '';
+    }
+    return Point;
+}());
+var Part = /** @class */ (function () {
+    function Part() {
+        this.distance = '';
+        this.type = '';
+        this.points = [];
+    }
+    return Part;
+}());
+var Trip = /** @class */ (function () {
+    function Trip() {
+        this.totalTime = '';
+        this.vehicleTime = '';
+        this.routeParts = [];
+    }
+    return Trip;
+}());
 function getXMLData$1(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination) {
     return new Promise(function (resolve, reject) {
         request('http://efa.sta.bz.it/apb/XML_TRIP_REQUEST2?locationServerActive=1&type_origin=coord&name_origin=' + longitudeOrigin + ':' + latitudeOrigin + ':WGS84[DD.DDDDD]&type_destination=coord&name_destination=' + longitudeDestination + ':' + latitudeDestination + ':WGS84[DD.DDDDD]', function (reqErr, reqRes, reqBody) {
@@ -137,25 +161,24 @@ function extractDataFromXML$1(returnBody) {
             else {
                 var usefulResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
                 // Go trough all possible routes:
+                var allTrips = [];
                 for (var i = 0; i < usefulResponse.length; i++) {
-                    console.log('Test');
+                    var currTrip = new Trip();
                     currTrip.totalTime = usefulResponse[i].$.publicDuration;
                     currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
-                    console.log(currTrip);
-                    for (var a = 0; a < usefulResponse[i].itdPartialRouteList.length; a++) {
-                        for (var b = 0; b < usefulResponse[i].itdPartialRouteList.itdPartialRoute.itdPoint.length; b++) {
-                            point.name = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].name;
-                            point.usage = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].usage;
-                            point.locality = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdPoint[b].locality;
-                            parts.points.push(point);
-                            console.log(point);
+                    for (var a = 0; a < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute.length; a++) {
+                        var currPart = new Part();
+                        for (var b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++) {
+                            var currPoint = new Point();
+                            currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].name;
+                            currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].usage;
+                            currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].locality;
+                            currPart.points.push(currPoint);
                         }
-                        parts.type = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.itdMeansOfTransport.productName;
-                        parts.distance = usefulResponse[i].itdPartialRouteList[a].itdPartialRoute.$.distance;
-                        console.log(parts);
-                        routeParts.parts.push(parts);
+                        currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName;
+                        currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance;
+                        currTrip.routeParts.push(currPart);
                     }
-                    console.log(currTrip);
                     allTrips.push(currTrip);
                 }
                 resolve(allTrips);
@@ -190,7 +213,7 @@ Router.post('/stopFinder', function (req, res) {
         res.json(stops);
     })
         .catch(function (err) {
-        res.json(err);
+        res.send('Error' + err);
     });
 });
 Router.post('/tripFinder', function (req, res) {
@@ -199,7 +222,7 @@ Router.post('/tripFinder', function (req, res) {
         res.json(trips);
     })
         .catch(function (err) {
-        res.json(err);
+        res.send('Error: ' + err);
     });
 });
 

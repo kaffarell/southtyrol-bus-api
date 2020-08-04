@@ -17,7 +17,7 @@ Router.post('/stopFinder', (req: express.Request, res: express.Response) => {
             res.json(stops);
         })
         .catch((err: string) => {
-            res.json(err);
+            res.send('Error' + err);
         });
 });
 
@@ -27,7 +27,7 @@ Router.post('/tripFinder', (req: express.Request, res: express.Response) => {
             res.json(trips);
         })
         .catch((err: string) => {
-            res.json(err);
+            res.send('Error: ' + err);
         });
 })
 
