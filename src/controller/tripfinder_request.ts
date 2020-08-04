@@ -50,8 +50,10 @@ function extractDataFromXML(returnBody: string){
                     const currTrip: Trip = new Trip();
                     currTrip.totalTime = usefulResponse[i].$.publicDuration;
                     currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
+                    // Go trough all Parts of a route
                     for(let a = 0; a < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute.length; a++){
                         const currPart: Part = new Part();
+                        // Go trough all points of a part
                         for(let b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++){
                             const currPoint: Point = new Point();
                             currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.name;
