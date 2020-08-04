@@ -61,7 +61,6 @@ function extractDataFromXML(returnBody: string){
                             currPart.points.push(currPoint);
                         }
                         currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName; 
-                        console.log(usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a]);
                         currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance; 
                         currPart.timeMinute = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.timeMinute; 
                         currTrip.routeParts.push(currPart);
