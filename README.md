@@ -16,11 +16,3 @@ Documentation can be found under docs/_build/html/index.html
  * Execute `npm start` to run the app
  * Execute `make html` in the docs/ directory to build the documentation
 
-
-## Todo
- * [x] Implement StopFinderRequest (Get specific Location + Info about near bus stations)
- * [x] Write Documentation
- * [ ] Write Tests (jest)
- * [ ] TripRequest (Calculate Trip with begin coord. and end coord.)
-
-
