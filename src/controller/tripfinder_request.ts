@@ -5,11 +5,13 @@ class Point {
     name: string = '';
     usage: string = '';
     locality: string = '';
+    placeID: string = '';
 }
 
 class Part {
     distance: string = '';
     type: string = '';
+    timeMinute: string = '';
     points: Array<Point> = [];
 
 }
@@ -52,13 +54,16 @@ function extractDataFromXML(returnBody: string){
                         const currPart: Part = new Part();
                         for(let b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++){
                             const currPoint: Point = new Point();
-                            currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].name;
-                            currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].usage;
-                            currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].locality;
+                            currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.name;
+                            currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.usage;
+                            currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.locality;
+                            currPoint.placeID = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.placeID;
                             currPart.points.push(currPoint);
                         }
                         currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName; 
+                        console.log(usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a]);
                         currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance; 
+                        currPart.timeMinute = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.timeMinute; 
                         currTrip.routeParts.push(currPart);
                     }
                     allTrips.push(currTrip);

@@ -120,6 +120,7 @@ var Point = /** @class */ (function () {
         this.name = '';
         this.usage = '';
         this.locality = '';
+        this.placeID = '';
     }
     return Point;
 }());
@@ -127,6 +128,7 @@ var Part = /** @class */ (function () {
     function Part() {
         this.distance = '';
         this.type = '';
+        this.timeMinute = '';
         this.points = [];
     }
     return Part;
@@ -170,13 +172,16 @@ function extractDataFromXML$1(returnBody) {
                         var currPart = new Part();
                         for (var b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++) {
                             var currPoint = new Point();
-                            currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].name;
-                            currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].usage;
-                            currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].locality;
+                            currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.name;
+                            currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.usage;
+                            currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.locality;
+                            currPoint.placeID = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.placeID;
                             currPart.points.push(currPoint);
                         }
                         currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName;
+                        console.log(usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a]);
                         currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance;
+                        currPart.timeMinute = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.timeMinute;
                         currTrip.routeParts.push(currPart);
                     }
                     allTrips.push(currTrip);
