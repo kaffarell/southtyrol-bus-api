@@ -1,5 +1,5 @@
 # South Tyrol bus API  
-![Build](https://github.com/kaffarell/southtyrol-bus-api/workflows/CI/badge.svg?branch=master) [![GitHub release](https://img.shields.io/github/release/kaffarell/southryrol-bus-api.svg)](https://GitHub.com/Naereen/StrapDown.js/releases/)
+![Build](https://github.com/kaffarell/southtyrol-bus-api/workflows/CI/badge.svg?branch=master) [![GitHub release](https://img.shields.io/github/release/kaffarell/southryrol-bus-api.svg)](https://GitHub.com/Naereen/StrapDown.js/releases/)  ![GitHub issues](https://img.shields.io/github/issues/kaffarell/southtyrol-bus-api)
   
   
 Modern and easy to use wrapper for the [STA (Strutture Trasporto Alto Adige) API](https://data.civis.bz.it/de/dataset/southtyrolean-public-transport)
