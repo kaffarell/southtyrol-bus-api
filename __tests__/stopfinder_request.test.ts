@@ -14,6 +14,9 @@ describe('Testing stopFinder', () => {
                     expect(stop[0].nearestPlace).toEqual('St. Ulrich');
                     expect(stop[0].nearestStreet).toEqual('Streda Cuca 68');
                 }
+            })
+            .catch((err: string) => {
+                throw(err);
             });
     });
 
@@ -33,6 +36,9 @@ describe('Testing stopFinder', () => {
                     expect(stops[1].nearestStopId).toEqual('66002932');
                     expect(stops[2].nearestStopId).toEqual('66002754');
                 }
+            })
+            .catch((err: string) => {
+                throw(err);
             });
     });
 });
