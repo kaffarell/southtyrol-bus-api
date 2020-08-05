@@ -115,6 +115,118 @@ function findLocationAction(longitude, latitude) {
     });
 }
 
+var Point = /** @class */ (function () {
+    function Point() {
+        this.name = '';
+        this.usage = '';
+        this.locality = '';
+        this.placeID = '';
+    }
+    return Point;
+}());
+var Part = /** @class */ (function () {
+    function Part() {
+        this.distance = '';
+        this.type = '';
+        this.timeMinute = '';
+        this.points = [];
+    }
+    return Part;
+}());
+var Trip = /** @class */ (function () {
+    function Trip() {
+        this.totalTime = '';
+        this.vehicleTime = '';
+        this.routeParts = [];
+    }
+    return Trip;
+}());
+function getXMLData$1(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination) {
+    return new Promise(function (resolve, reject) {
+        request('http://efa.sta.bz.it/apb/XML_TRIP_REQUEST2?locationServerActive=1&type_origin=coord&name_origin=' + longitudeOrigin + ':' + latitudeOrigin + ':WGS84[DD.DDDDD]&type_destination=coord&name_destination=' + longitudeDestination + ':' + latitudeDestination + ':WGS84[DD.DDDDD]', function (reqErr, reqRes, reqBody) {
+            if (reqErr) {
+                reject(reqErr);
+            }
+            else {
+                resolve(reqBody);
+            }
+        });
+    });
+}
+function extractDataFromXML$1(returnBody) {
+    return new Promise(function (resolve, reject) {
+        var parser = new xml2js.Parser();
+        parser.parseString(returnBody, function (err, data) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                var usefulResponse = data.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
+                // Go trough all possible routes:
+                var allTrips = [];
+                for (var i = 0; i < usefulResponse.length; i++) {
+                    var currTrip = new Trip();
+                    currTrip.totalTime = usefulResponse[i].$.publicDuration;
+                    currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
+                    // Go trough all Parts of a route
+                    for (var a = 0; a < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute.length; a++) {
+                        var currPart = new Part();
+                        // Go trough all points of a part
+                        for (var b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++) {
+                            var currPoint = new Point();
+                            currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.name;
+                            currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.usage;
+                            currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.locality;
+                            currPoint.placeID = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.placeID;
+                            currPart.points.push(currPoint);
+                        }
+                        currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName;
+                        currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance;
+                        currPart.timeMinute = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.timeMinute;
+                        currTrip.routeParts.push(currPart);
+                    }
+                    allTrips.push(currTrip);
+                }
+                resolve(allTrips);
+            }
+        });
+    });
+}
+function findTripAction(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination) {
+    return __awaiter(this, void 0, void 0, function () {
+        var xmlData, e_1, processedData, e_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    xmlData = '';
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, getXMLData$1(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination)];
+                case 2:
+                    xmlData = _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_1 = _a.sent();
+                    throw (e_1);
+                case 4:
+                    processedData = '';
+                    _a.label = 5;
+                case 5:
+                    _a.trys.push([5, 7, , 8]);
+                    return [4 /*yield*/, extractDataFromXML$1(xmlData)];
+                case 6:
+                    processedData = _a.sent();
+                    return [3 /*break*/, 8];
+                case 7:
+                    e_2 = _a.sent();
+                    throw (e_2);
+                case 8: return [2 /*return*/, processedData];
+            }
+        });
+    });
+}
+
 var Router = express.Router();
 Router.get('/', function (req, res) {
     res.send("Api under Construction 🚧");
@@ -125,7 +237,16 @@ Router.post('/stopFinder', function (req, res) {
         res.json(stops);
     })
         .catch(function (err) {
-        res.json(err);
+        res.send('Error' + err);
+    });
+});
+Router.post('/tripFinder', function (req, res) {
+    findTripAction(req.body.lon_or, req.body.lat_or, req.body.lon_dest, req.body.lat_dest)
+        .then(function (trips) {
+        res.json(trips);
+    })
+        .catch(function (err) {
+        res.send('Error: ' + err);
     });
 });
 
