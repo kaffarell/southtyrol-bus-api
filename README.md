@@ -7,9 +7,9 @@ Modern and easy to use wrapper for the [STA (Strutture Trasporto Alto Adige) API
 
 #### Issues and PRs are welcome 🎓
 
-## Features
-Documentation can be found under docs/_build/html/index.html
- * StopFinderRequest (submit coordinates and you will get all the bus-stations near you)
+## Documentation
+Documentation can be found [here](https://github.com/kaffarell/southtyrol-bus-api/wiki)
+
  
  
 ## Setup
@@ -17,5 +17,4 @@ Documentation can be found under docs/_build/html/index.html
  * Execute `npm install`
  * Execute `npm run build` to transpile ts and run the linter
  * Execute `npm start` to run the app
- * Execute `make html` in the docs/ directory to build the documentation
 
