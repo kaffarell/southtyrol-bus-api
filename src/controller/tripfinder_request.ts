@@ -77,7 +77,7 @@ function extractDataFromXML(returnBody: string){
     });
 }
 
-async function findTripAction(longitudeOrigin: string, latitudeOrigin: string, longitudeDestination: string, latitudeDestination: string): Promise<Array<Trip> | string>{
+async function findTripAction(longitudeOrigin: string, latitudeOrigin: string, longitudeDestination: string, latitudeDestination: string): Promise<Array<Trip> | string> {
     const xmlData = await getXMLData(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination);
     const processedData = await extractDataFromXML(xmlData);
     return processedData;

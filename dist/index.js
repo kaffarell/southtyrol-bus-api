@@ -168,8 +168,10 @@ function extractDataFromXML$1(returnBody) {
                     var currTrip = new Trip();
                     currTrip.totalTime = usefulResponse[i].$.publicDuration;
                     currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
+                    // Go trough all Parts of a route
                     for (var a = 0; a < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute.length; a++) {
                         var currPart = new Part();
+                        // Go trough all points of a part
                         for (var b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++) {
                             var currPoint = new Point();
                             currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.name;
@@ -179,7 +181,6 @@ function extractDataFromXML$1(returnBody) {
                             currPart.points.push(currPoint);
                         }
                         currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName;
-                        console.log(usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a]);
                         currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance;
                         currPart.timeMinute = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.timeMinute;
                         currTrip.routeParts.push(currPart);
