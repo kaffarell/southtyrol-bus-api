@@ -16,7 +16,7 @@ Documentation can be found [here](https://github.com/kaffarell/southtyrol-bus-ap
  
  
 ## Setup
- * Install npm
+ * Install npm and nodeJS
  * Execute `npm install`
  * Execute `npm run build` to transpile ts and run the linter
  * Execute `npm start` to run the app
