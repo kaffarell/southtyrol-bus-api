@@ -78,6 +78,21 @@ function extractDataFromXML(returnBody: string){
 }
 
 async function findTripAction(longitudeOrigin: string, latitudeOrigin: string, longitudeDestination: string, latitudeDestination: string): Promise<Array<Trip> | string> {
+    if(longitudeOrigin.match(/[^0-9.]+/) != null || latitudeOrigin.match(/[^0-9.]+/) != null || longitudeDestination.match(/[^0-9.]+/) != null || latitudeDestination.match(/[^0-9.]+/) != null){
+        throw('Latitude or Longitude are not numbers');
+    }
+    const index_lat_or: number = latitudeOrigin.indexOf('.');
+    const index_lon_or: number = longitudeOrigin.indexOf('.');
+    const index_lat_dest: number = latitudeDestination.indexOf('.');
+    const index_lon_dest: number = longitudeDestination.indexOf('.');
+    
+    if((latitudeOrigin.length-1 - index_lat_or) != 5 || (longitudeOrigin.length-1 - index_lon_or) != 5){
+        throw('Latitude and Langitude have to have 5 digits after the comma');
+    }
+    if((latitudeDestination.length-1 - index_lat_dest) != 5 || (longitudeDestination.length-1 - index_lon_dest) != 5){
+        throw('Latitude and Langitude have to have 5 digits after the comma');
+    }
+
     let xmlData: string = '';
     try{
         xmlData = await getXMLData(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination);

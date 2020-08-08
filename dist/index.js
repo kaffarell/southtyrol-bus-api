@@ -100,14 +100,17 @@ function getXMLData(longitude, latitude) {
 }
 function findLocationAction(longitude, latitude) {
     return __awaiter(this, void 0, void 0, function () {
-        var xmlData, error_1, processedData, error_2;
+        var index_lat, index_lon, xmlData, error_1, processedData, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("before");
                     if (longitude.match(/[^0-9.]+/) != null || latitude.match(/[^0-9.]+/) != null) {
-                        console.log("Hello");
                         throw ('Latitude or Longitude are not numbers');
+                    }
+                    index_lat = latitude.indexOf('.');
+                    index_lon = longitude.indexOf('.');
+                    if ((latitude.length - 1 - index_lat) != 5 || (longitude.length - 1 - index_lon) != 5) {
+                        throw ('Latitude and Langitude have to have 5 digits after the comma');
                     }
                     xmlData = '';
                     _a.label = 1;

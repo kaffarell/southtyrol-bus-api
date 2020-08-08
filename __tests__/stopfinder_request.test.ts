@@ -45,7 +45,13 @@ describe('Testing stopFinder', () => {
     test('Longitude and Latitude not numbers', () => {
         findLocationAction('asdfasdf', 'fasdfasdf')
             .catch((err: string) => {
-                expect('Latitude or Longitude are not numbers')
+                expect(err).toBe('Latitude or Longitude are not numbers');
+            });
+    });
+    test('Longitude and latitude have not 5 digits after the comma', () => {
+        findLocationAction('10.000', '10.000000')
+            .catch((err: string) => {
+                expect(err).toBe('Latitude and Langitude have to have 5 digits after the comma');
             });
     });
 });

@@ -56,6 +56,12 @@ async function findLocationAction(longitude: string, latitude: string): Promise<
     if(longitude.match(/[^0-9.]+/) != null || latitude.match(/[^0-9.]+/) != null){
         throw('Latitude or Longitude are not numbers');
     }
+    const index_lat: number = latitude.indexOf('.');
+    const index_lon: number = longitude.indexOf('.');
+    if((latitude.length-1 - index_lat) != 5 || (longitude.length-1 - index_lon) != 5){
+        throw('Latitude and Langitude have to have 5 digits after the comma');
+    }
+
     let xmlData: string = '';
     try {
         xmlData = await getXMLData(longitude, latitude);

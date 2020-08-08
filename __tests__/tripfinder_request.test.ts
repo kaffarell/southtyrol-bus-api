@@ -72,4 +72,18 @@ describe('Testing stopFinder', () => {
                 throw(err);
             });
     });
+
+
+    test('Longitude and Latitude not numbers', () => {
+        findTripAction('asdfasdf', 'fasdfasdf', '11.71916', '46.55839')
+            .catch((err: string) => {
+                expect(err).toBe('Latitude or Longitude are not numbers');
+            });
+    });
+    test('Longitude and latitude have not 5 digits after the comma', () => {
+        findTripAction('11.7196', '46.55839', '11.71916', '46.558390')
+            .catch((err: string) => {
+                expect(err).toBe('Latitude and Langitude have to have 5 digits after the comma');
+            });
+    });
 });
