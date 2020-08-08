@@ -41,4 +41,11 @@ describe('Testing stopFinder', () => {
                 throw(err);
             });
     });
+
+    test('Longitude and Latitude not numbers', () => {
+        findLocationAction('asdfasdf', 'fasdfasdf')
+            .catch((err: string) => {
+                expect('Latitude or Longitude are not numbers')
+            });
+    });
 });

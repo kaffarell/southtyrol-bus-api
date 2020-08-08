@@ -17,7 +17,7 @@ Router.post('/stopFinder', (req: express.Request, res: express.Response) => {
             res.json(stops);
         })
         .catch((err: string) => {
-            res.send('Error' + err);
+            res.send('Error: ' + err);
         });
 });
 

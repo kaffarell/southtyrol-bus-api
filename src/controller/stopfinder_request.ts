@@ -52,7 +52,10 @@ function getXMLData(longitude: string, latitude: string): Promise<string>{
     });
 }
 
-async function findLocationAction(longitude: string, latitude: string): Promise<Array<stopFinderRequest> | string>{
+async function findLocationAction(longitude: string, latitude: string): Promise<Array<stopFinderRequest> | string> {
+    if(longitude.match(/[^0-9.]+/) != null || latitude.match(/[^0-9.]+/) != null){
+        throw('Latitude or Longitude are not numbers');
+    }
     let xmlData: string = '';
     try {
         xmlData = await getXMLData(longitude, latitude);

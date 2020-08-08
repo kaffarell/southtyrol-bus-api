@@ -104,6 +104,11 @@ function findLocationAction(longitude, latitude) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    console.log("before");
+                    if (longitude.match(/[^0-9.]+/) != null || latitude.match(/[^0-9.]+/) != null) {
+                        console.log("Hello");
+                        throw ('Latitude or Longitude are not numbers');
+                    }
                     xmlData = '';
                     _a.label = 1;
                 case 1:
@@ -255,7 +260,7 @@ Router.post('/stopFinder', function (req, res) {
         res.json(stops);
     })
         .catch(function (err) {
-        res.send('Error' + err);
+        res.send('Error: ' + err);
     });
 });
 Router.post('/tripFinder', function (req, res) {
