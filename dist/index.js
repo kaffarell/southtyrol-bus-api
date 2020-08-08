@@ -100,16 +100,34 @@ function getXMLData(longitude, latitude) {
 }
 function findLocationAction(longitude, latitude) {
     return __awaiter(this, void 0, void 0, function () {
-        var xmlData, processedData;
+        var xmlData, error_1, processedData, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getXMLData(longitude, latitude)];
+                case 0:
+                    xmlData = '';
+                    _a.label = 1;
                 case 1:
-                    xmlData = _a.sent();
-                    return [4 /*yield*/, extractDataFromXML(xmlData)];
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, getXMLData(longitude, latitude)];
                 case 2:
+                    xmlData = _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    throw (error_1);
+                case 4:
+                    processedData = '';
+                    _a.label = 5;
+                case 5:
+                    _a.trys.push([5, 7, , 8]);
+                    return [4 /*yield*/, extractDataFromXML(xmlData)];
+                case 6:
                     processedData = _a.sent();
-                    return [2 /*return*/, processedData];
+                    return [3 /*break*/, 8];
+                case 7:
+                    error_2 = _a.sent();
+                    throw (error_2);
+                case 8: return [2 /*return*/, processedData];
             }
         });
     });
@@ -251,8 +269,9 @@ Router.post('/tripFinder', function (req, res) {
 });
 
 var app = express();
+var port = process.env.PORT || 5000;
 app.use(express.json());
 app.use('/api', Router);
-app.listen(5000, function () {
-    console.log('Server listening on Port 5000');
+app.listen(port, function () {
+    console.log('Server listening on Port ' + port);
 });
