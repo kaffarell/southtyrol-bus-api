@@ -220,10 +220,23 @@ function extractDataFromXML$1(returnBody) {
 }
 function findTripAction(longitudeOrigin, latitudeOrigin, longitudeDestination, latitudeDestination) {
     return __awaiter(this, void 0, void 0, function () {
-        var xmlData, e_1, processedData, e_2;
+        var index_lat_or, index_lon_or, index_lat_dest, index_lon_dest, xmlData, e_1, processedData, e_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    if (longitudeOrigin.match(/[^0-9.]+/) != null || latitudeOrigin.match(/[^0-9.]+/) != null || longitudeDestination.match(/[^0-9.]+/) != null || latitudeDestination.match(/[^0-9.]+/) != null) {
+                        throw ('Latitude or Longitude are not numbers');
+                    }
+                    index_lat_or = latitudeOrigin.indexOf('.');
+                    index_lon_or = longitudeOrigin.indexOf('.');
+                    index_lat_dest = latitudeDestination.indexOf('.');
+                    index_lon_dest = longitudeDestination.indexOf('.');
+                    if ((latitudeOrigin.length - 1 - index_lat_or) != 5 || (longitudeOrigin.length - 1 - index_lon_or) != 5) {
+                        throw ('Latitude and Langitude have to have 5 digits after the comma');
+                    }
+                    if ((latitudeDestination.length - 1 - index_lat_dest) != 5 || (longitudeDestination.length - 1 - index_lon_dest) != 5) {
+                        throw ('Latitude and Langitude have to have 5 digits after the comma');
+                    }
                     xmlData = '';
                     _a.label = 1;
                 case 1:
