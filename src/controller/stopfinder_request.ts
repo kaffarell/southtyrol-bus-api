@@ -1,45 +1,47 @@
 import request from 'request';
 
-interface stopFinderRequest {
+interface IStopFinderRequest {
     nearestStopName: string;
     nearestStopId: string;
     nearestStopPlace: string;
     nearestStopDistance: string;
     nearestStopDistanceTime: string;
-    nearestPlace: string;
-    nearestStreet: string;
 }
 
 
-function extractDataFromJson(returnBody: string): Promise<Array<stopFinderRequest> | string>{
-    return new Promise<Array<stopFinderRequest> | string>((resolve, reject) => {
+function extractDataFromJson(returnBody: string): Promise<Array<IStopFinderRequest> | string>{
+    return new Promise<Array<IStopFinderRequest> | string>((resolve, reject) => {
 
-        const parsedJson = JSON.parse(returnBody);
+        let parsedJson;
         try{
-            const usefulResponse = parsedJson.itdRequest.itdStopFinderRequest[0].itdOdv;
-            const stopFinderRequestArray: Array<stopFinderRequest> = [];
-            for(let i = 0; i < usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop.length; i++){
-                const newStopFinderRequest: stopFinderRequest = {
-                    nearestStopName: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.nameWithPlace,
-                    nearestStopId: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.stopID,
-                    nearestStopPlace: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.place,
-                    nearestStopDistance: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.distance,
-                    nearestStopDistanceTime: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.distanceTime,
-                    nearestPlace: usefulResponse[0].itdOdvPlace[0].odvPlaceElem[0]._,
-                    nearestStreet: usefulResponse[0].itdOdvName[0].odvNameElem[0]._,
+            parsedJson = JSON.parse(returnBody);
+        }catch(e){
+            reject(e);
+        }
+
+        try{
+            const usefulResponse = parsedJson.stopFinder.itdOdvAssignedStops;
+            const stopFinderRequestArray: Array<IStopFinderRequest> = [];
+            for(let i = 0; i < usefulResponse.length; i++){
+                const newStopFinderRequest: IStopFinderRequest = {
+                    nearestStopName: usefulResponse[i].nameWithPlace,
+                    nearestStopId: usefulResponse[i].stopID,
+                    nearestStopPlace: usefulResponse[i].place,
+                    nearestStopDistance: usefulResponse[i].distance,
+                    nearestStopDistanceTime: usefulResponse[i].distanceTime,
                 }
                 stopFinderRequestArray.push(newStopFinderRequest);
             } 
             resolve(stopFinderRequestArray);
-        }catch {
-            reject();
+        }catch(e) {
+            reject(e);
         }
     });
 }
 
-function getXMLData(longitude: string, latitude: string): Promise<string>{
+function getData(longitude: string, latitude: string): Promise<string>{
     return new Promise<string>((resolve, reject) => {
-        request('http://efa.sta.bz.it/apb/XML_STOPFINDER_REQUEST?locationServerActive=0&type_sf=coord&name_sf=' + longitude +':' + latitude +':WGS84[DD.DDDDD]', (reqErr, reqRes, reqBody) => {
+        request('http://efa.sta.bz.it/apb/XML_STOPFINDER_REQUEST?locationServerActive=0&type_sf=coord&name_sf=' + longitude +':' + latitude +':WGS84[DD.DDDDD]&outputFormat=json', (reqErr, reqRes, reqBody) => {
             if(reqErr){
                 reject(reqErr);
             }else{
@@ -49,7 +51,7 @@ function getXMLData(longitude: string, latitude: string): Promise<string>{
     });
 }
 
-async function findLocationAction(longitude: string, latitude: string): Promise<Array<stopFinderRequest> | string> {
+async function findLocationAction(longitude: string, latitude: string): Promise<Array<IStopFinderRequest> | string> {
     if(longitude.match(/[^0-9.]+/) != null || latitude.match(/[^0-9.]+/) != null){
         throw('Latitude or Longitude are not numbers');
     }
@@ -61,11 +63,11 @@ async function findLocationAction(longitude: string, latitude: string): Promise<
 
     let jsonData: string = '';
     try {
-        jsonData = await getXMLData(longitude, latitude);
+        jsonData = await getData(longitude, latitude);
     } catch (error) {
         throw(error);
     }
-    let processedData: Array<stopFinderRequest> | string = '';
+    let processedData: Array<IStopFinderRequest> | string = '';
     try {
         processedData = await extractDataFromJson(jsonData);
     } catch (error) {
@@ -76,5 +78,5 @@ async function findLocationAction(longitude: string, latitude: string): Promise<
 
 export {
     findLocationAction,
-    stopFinderRequest
+    IStopFinderRequest as stopFinderRequest
 }
