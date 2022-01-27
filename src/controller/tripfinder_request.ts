@@ -5,11 +5,18 @@ class Point {
     usage: string = '';
     locality: string = '';
     placeID: string = '';
+    date: string = '';
+    time: string = '';
+    rttime: string = '';
 }
 
 class Part {
-    distance: string = '';
-    type: string = '';
+    // TODO: check what this is
+    realtime: string = '';
+    // f.e. Bus, Fussweg etc
+    product: string = '';
+    // f.e. Bus line nr 503
+    productNumber: string = '';
     timeMinute: string = '';
     points: Array<Point> = [];
 
@@ -17,14 +24,16 @@ class Part {
 
 class Trip {
     totalTime: string = '';
-    vehicleTime: string = '';
+    // TODO: interchange and distance should be int
+    interchange: string = '';
+    distance: string = '';
     routeParts: Array<Part> = []; 
 }
 
 
 function getData(longitudeOrigin: string, latitudeOrigin: string, longitudeDestination: string, latitudeDestination: string): Promise<string>{
     return new Promise<string>((resolve, reject) => {
-        request('http://efa.sta.bz.it/apb/XML_TRIP_REQUEST2?locationServerActive=1&type_origin=coord&name_origin=' + longitudeOrigin + ':' + latitudeOrigin + ':WGS84[DD.DDDDD]&type_destination=coord&name_destination=' + longitudeDestination + ':' + latitudeDestination + ':WGS84[DD.DDDDD]', (reqErr, reqRes, reqBody) => {
+        request('http://efa.sta.bz.it/apb/XML_TRIP_REQUEST2?locationServerActive=1&type_origin=coord&name_origin=' + longitudeOrigin + ':' + latitudeOrigin + ':WGS84[DD.DDDDD]&type_destination=coord&name_destination=' + longitudeDestination + ':' + latitudeDestination + ':WGS84[DD.DDDDD]&outputFormat=json', (reqErr, reqRes, reqBody) => {
             if(reqErr){
                 reject(reqErr);
             }else{
@@ -37,30 +46,42 @@ function getData(longitudeOrigin: string, latitudeOrigin: string, longitudeDesti
 
 function extractDataFromJson(returnBody: string){
     return new Promise<Array<Trip> | string>((resolve, reject) => {
-        const parsedJson = JSON.parse(returnBody);
+        let parsedJson;
         try{
-            const usefulResponse = parsedJson.itdRequest.itdTripRequest[0].itdItinerary[0].itdRouteList[0].itdRoute;
+            parsedJson = JSON.parse(returnBody);
+        }catch(e){
+            reject(e);
+        }
+        console.log(parsedJson.trips[0].legs[0].points);
+
+        try{
+            const usefulResponse = parsedJson.trips;
             // Go trough all possible routes:
             const allTrips: Array<Trip> = []; 
             for(let i = 0; i < usefulResponse.length; i++){
                 const currTrip: Trip = new Trip();
-                currTrip.totalTime = usefulResponse[i].$.publicDuration;
-                currTrip.vehicleTime = usefulResponse[i].$.vehicleTime;
+                currTrip.totalTime = usefulResponse[i].duration;
+                currTrip.interchange = usefulResponse[i].interchange;
+                currTrip.distance = usefulResponse[i].distance;
                 // Go trough all Parts of a route
-                for(let a = 0; a < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute.length; a++){
+                for(let a = 0; a < usefulResponse[i].legs.length; a++){
                     const currPart: Part = new Part();
                     // Go trough all points of a part
-                    for(let b = 0; b < usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint.length; b++){
+                    for(let b = 0; b < usefulResponse[i].legs[a].points.length; b++){
                         const currPoint: Point = new Point();
-                        currPoint.name = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.name;
-                        currPoint.usage = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.usage;
-                        currPoint.locality = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.locality;
-                        currPoint.placeID = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdPoint[b].$.placeID;
+                        currPoint.name = usefulResponse[i].legs[a].points[b].name;
+                        currPoint.usage = usefulResponse[i].legs[a].points[b].usage;
+                        currPoint.locality = usefulResponse[i].legs[a].points[b].place;
+                        currPoint.placeID = usefulResponse[i].legs[a].points[b].placeID;
+                        currPoint.date = usefulResponse[i].legs[a].points[b].dateTime.date;
+                        currPoint.time = usefulResponse[i].legs[a].points[b].dateTime.time;
+                        currPoint.rttime = usefulResponse[i].legs[a].points[b].dateTime.rttime;
                         currPart.points.push(currPoint);
                     }
-                    currPart.type = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].itdMeansOfTransport[0].$.productName; 
-                    currPart.distance = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.distance; 
-                    currPart.timeMinute = usefulResponse[i].itdPartialRouteList[0].itdPartialRoute[a].$.timeMinute; 
+                    currPart.product = usefulResponse[i].legs[a].mode.product; 
+                    currPart.productNumber = usefulResponse[i].legs[a].mode.number; 
+                    currPart.timeMinute = usefulResponse[i].legs[a].timeMinute; 
+                    currPart.realtime = usefulResponse[i].legs[a].mode.realtime; 
                     currTrip.routeParts.push(currPart);
                 }
                 allTrips.push(currTrip);
@@ -68,8 +89,8 @@ function extractDataFromJson(returnBody: string){
             }
             resolve(allTrips);
                 
-        }catch{
-            reject();
+        }catch(e){
+            reject(e);
         }
     });
 }
