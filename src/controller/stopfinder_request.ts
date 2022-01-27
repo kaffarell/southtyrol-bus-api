@@ -1,5 +1,4 @@
 import request from 'request';
-import * as xml2js from 'xml2js';
 
 interface stopFinderRequest {
     nearestStopName: string;
@@ -12,31 +11,29 @@ interface stopFinderRequest {
 }
 
 
-function extractDataFromXML(returnBody: string): Promise<Array<stopFinderRequest> | string>{
+function extractDataFromJson(returnBody: string): Promise<Array<stopFinderRequest> | string>{
     return new Promise<Array<stopFinderRequest> | string>((resolve, reject) => {
 
-        const parser = new xml2js.Parser();
-        parser.parseString(returnBody, (err: string, data: any) => {
-            if(err){
-                reject(err);
-            }else{
-                const usefulResponse = data.itdRequest.itdStopFinderRequest[0].itdOdv;
-                const stopFinderRequestArray: Array<stopFinderRequest> = [];
-                for(let i = 0; i < usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop.length; i++){
-                    const newStopFinderRequest: stopFinderRequest = {
-                        nearestStopName: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.nameWithPlace,
-                        nearestStopId: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.stopID,
-                        nearestStopPlace: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.place,
-                        nearestStopDistance: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.distance,
-                        nearestStopDistanceTime: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.distanceTime,
-                        nearestPlace: usefulResponse[0].itdOdvPlace[0].odvPlaceElem[0]._,
-                        nearestStreet: usefulResponse[0].itdOdvName[0].odvNameElem[0]._,
-                    }
-                    stopFinderRequestArray.push(newStopFinderRequest);
-                } 
-                resolve(stopFinderRequestArray);
-            }
-        });
+        const parsedJson = JSON.parse(returnBody);
+        try{
+            const usefulResponse = parsedJson.itdRequest.itdStopFinderRequest[0].itdOdv;
+            const stopFinderRequestArray: Array<stopFinderRequest> = [];
+            for(let i = 0; i < usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop.length; i++){
+                const newStopFinderRequest: stopFinderRequest = {
+                    nearestStopName: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.nameWithPlace,
+                    nearestStopId: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.stopID,
+                    nearestStopPlace: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.place,
+                    nearestStopDistance: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.distance,
+                    nearestStopDistanceTime: usefulResponse[0].itdOdvAssignedStops[0].itdOdvAssignedStop[i].$.distanceTime,
+                    nearestPlace: usefulResponse[0].itdOdvPlace[0].odvPlaceElem[0]._,
+                    nearestStreet: usefulResponse[0].itdOdvName[0].odvNameElem[0]._,
+                }
+                stopFinderRequestArray.push(newStopFinderRequest);
+            } 
+            resolve(stopFinderRequestArray);
+        }catch {
+            reject();
+        }
     });
 }
 
@@ -62,15 +59,15 @@ async function findLocationAction(longitude: string, latitude: string): Promise<
         throw('Latitude and Langitude have to have 5 digits after the comma');
     }
 
-    let xmlData: string = '';
+    let jsonData: string = '';
     try {
-        xmlData = await getXMLData(longitude, latitude);
+        jsonData = await getXMLData(longitude, latitude);
     } catch (error) {
         throw(error);
     }
     let processedData: Array<stopFinderRequest> | string = '';
     try {
-        processedData = await extractDataFromXML(xmlData);
+        processedData = await extractDataFromJson(jsonData);
     } catch (error) {
         throw(error);
     }
