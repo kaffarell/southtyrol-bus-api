@@ -1,4 +1,6 @@
-import request from 'request';
+import pino from 'pino';
+import axios from 'axios';
+const logger = pino();
 
 interface IDmRequest {
     test: string;
@@ -11,10 +13,10 @@ function extractDataFromJson(returnBody: string): Promise<IDmRequest | string>{
         try{
             parsedJson = JSON.parse(returnBody);
         }catch(e){
-            console.error('Error parsing json');
+            logger.error('Error parsing json');
             reject(e);
         }
-        console.log(parsedJson.dm);
+        //console.log(parsedJson.dm);
 
         try{
             const usefulResponse = parsedJson.dm;
@@ -26,13 +28,17 @@ function extractDataFromJson(returnBody: string): Promise<IDmRequest | string>{
 
 function getData(stopId: string): Promise<string>{
     return new Promise<string>((resolve, reject) => {
-        request('http://efa.sta.bz.it/apb/XML_DM_REQUEST?type_dm=stopID&name_dm=' + stopId + '&outputFormat=json', (reqErr, reqRes, reqBody) => {
-            if(reqErr){
-                reject(reqErr);
-            }else{
-                resolve(reqBody);
-            }
-        });
+        axios.get('http://efa.sta.bz.it/apb/XML_DM_REQUEST?type_dm=stopID&name_dm=' + stopId + '&outputFormat=json')
+            .then(reponse => {
+                resolve(reponse.data);
+            }).catch(error => {
+                if(error.reponse) {
+                    logger.error(error.response.data)
+                    logger.error(error.response.status);
+                    logger.error(error.response.headers);
+                }
+                reject(error);
+            });
     });
 }
 

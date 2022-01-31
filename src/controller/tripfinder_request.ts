@@ -1,4 +1,6 @@
-import request from 'request';
+import axios from "axios";
+import pino from 'pino';
+const logger = pino();
 
 class Point {
     name: string = '';
@@ -33,13 +35,17 @@ class Trip {
 
 function getData(longitudeOrigin: string, latitudeOrigin: string, longitudeDestination: string, latitudeDestination: string): Promise<string>{
     return new Promise<string>((resolve, reject) => {
-        request('http://efa.sta.bz.it/apb/XML_TRIP_REQUEST2?locationServerActive=1&type_origin=coord&name_origin=' + longitudeOrigin + ':' + latitudeOrigin + ':WGS84[DD.DDDDD]&type_destination=coord&name_destination=' + longitudeDestination + ':' + latitudeDestination + ':WGS84[DD.DDDDD]&outputFormat=json', (reqErr, reqRes, reqBody) => {
-            if(reqErr){
-                reject(reqErr);
-            }else{
-                resolve(reqBody);
-            }
-        });
+        axios.get('http://efa.sta.bz.it/apb/XML_TRIP_REQUEST2?locationServerActive=1&type_origin=coord&name_origin=' + longitudeOrigin + ':' + latitudeOrigin + ':WGS84[DD.DDDDD]&type_destination=coord&name_destination=' + longitudeDestination + ':' + latitudeDestination + ':WGS84[DD.DDDDD]&outputFormat=json')
+            .then((response) => {
+                resolve(response.data);
+            }).catch((error) => {
+                if(error.reponse) {
+                    logger.error(error.response.data);
+                    logger.error(error.response.status);
+                    logger.error(error.response.headers);
+                }
+                reject(error);
+            });
     });
 }
 
@@ -52,7 +58,6 @@ function extractDataFromJson(returnBody: string){
         }catch(e){
             reject(e);
         }
-        console.log(parsedJson.trips[0].legs[0].points);
 
         try{
             const usefulResponse = parsedJson.trips;
