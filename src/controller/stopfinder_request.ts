@@ -1,4 +1,7 @@
-import request from 'request';
+import axios from 'axios';
+import pino from 'pino';
+
+const logger = pino();
 
 interface IStopFinderRequest {
     nearestStopName: string;
@@ -9,18 +12,11 @@ interface IStopFinderRequest {
 }
 
 
-function extractDataFromJson(returnBody: string): Promise<Array<IStopFinderRequest> | string>{
+function extractDataFromJson(returnBody: any): Promise<Array<IStopFinderRequest> | string>{
     return new Promise<Array<IStopFinderRequest> | string>((resolve, reject) => {
 
-        let parsedJson;
         try{
-            parsedJson = JSON.parse(returnBody);
-        }catch(e){
-            reject(e);
-        }
-
-        try{
-            const usefulResponse = parsedJson.stopFinder.itdOdvAssignedStops;
+            const usefulResponse = returnBody.stopFinder.itdOdvAssignedStops;
             const stopFinderRequestArray: Array<IStopFinderRequest> = [];
             for(let i = 0; i < usefulResponse.length; i++){
                 const newStopFinderRequest: IStopFinderRequest = {
@@ -41,13 +37,17 @@ function extractDataFromJson(returnBody: string): Promise<Array<IStopFinderReque
 
 function getData(longitude: string, latitude: string): Promise<string>{
     return new Promise<string>((resolve, reject) => {
-        request('http://efa.sta.bz.it/apb/XML_STOPFINDER_REQUEST?locationServerActive=0&type_sf=coord&name_sf=' + longitude +':' + latitude +':WGS84[DD.DDDDD]&outputFormat=json', (reqErr, reqRes, reqBody) => {
-            if(reqErr){
-                reject(reqErr);
-            }else{
-                resolve(reqBody);
-            }
-        });
+        axios.get('http://efa.sta.bz.it/apb/XML_STOPFINDER_REQUEST?locationServerActive=0&type_sf=coord&name_sf=' + longitude +':' + latitude +':WGS84[DD.DDDDD]&outputFormat=json')
+            .then((response) => {
+                resolve(response.data);
+            }).catch((error) => {
+                if(error.reponse) {
+                    logger.error(error.response.data);
+                    logger.error(error.response.status);
+                    logger.error(error.response.headers);
+                }
+                reject(error);
+            });
     });
 }
 
