@@ -6,20 +6,13 @@ interface IDmRequest {
     test: string;
 }
 
-function extractDataFromJson(returnBody: string): Promise<IDmRequest | string>{
+function extractDataFromJson(returnBody: any): Promise<IDmRequest | string>{
     return new Promise<IDmRequest | string>((resolve, reject) => {
 
-        let parsedJson;
-        try{
-            parsedJson = JSON.parse(returnBody);
-        }catch(e){
-            logger.error('Error parsing json');
-            reject(e);
-        }
-        //console.log(parsedJson.dm);
+        console.log(returnBody.dm);
 
         try{
-            const usefulResponse = parsedJson.dm;
+            const usefulResponse = returnBody.dm;
         }catch(e) {
             reject(e);
         }

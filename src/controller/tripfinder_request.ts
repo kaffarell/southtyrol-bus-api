@@ -50,17 +50,11 @@ function getData(longitudeOrigin: string, latitudeOrigin: string, longitudeDesti
 }
 
 
-function extractDataFromJson(returnBody: string){
+function extractDataFromJson(returnBody: any){
     return new Promise<Array<Trip> | string>((resolve, reject) => {
-        let parsedJson;
-        try{
-            parsedJson = JSON.parse(returnBody);
-        }catch(e){
-            reject(e);
-        }
 
         try{
-            const usefulResponse = parsedJson.trips;
+            const usefulResponse = returnBody.trips;
             // Go trough all possible routes:
             const allTrips: Array<Trip> = []; 
             for(let i = 0; i < usefulResponse.length; i++){

@@ -12,18 +12,11 @@ interface IStopFinderRequest {
 }
 
 
-function extractDataFromJson(returnBody: string): Promise<Array<IStopFinderRequest> | string>{
+function extractDataFromJson(returnBody: any): Promise<Array<IStopFinderRequest> | string>{
     return new Promise<Array<IStopFinderRequest> | string>((resolve, reject) => {
 
-        let parsedJson;
         try{
-            parsedJson = JSON.parse(returnBody);
-        }catch(e){
-            reject(e);
-        }
-
-        try{
-            const usefulResponse = parsedJson.stopFinder.itdOdvAssignedStops;
+            const usefulResponse = returnBody.stopFinder.itdOdvAssignedStops;
             const stopFinderRequestArray: Array<IStopFinderRequest> = [];
             for(let i = 0; i < usefulResponse.length; i++){
                 const newStopFinderRequest: IStopFinderRequest = {
