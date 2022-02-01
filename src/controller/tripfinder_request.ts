@@ -39,7 +39,7 @@ function getData(longitudeOrigin: string, latitudeOrigin: string, longitudeDesti
             .then((response) => {
                 resolve(response.data);
             }).catch((error) => {
-                if(error.reponse) {
+                if(error.response) {
                     logger.error(error.response.data);
                     logger.error(error.response.status);
                     logger.error(error.response.headers);

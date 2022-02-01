@@ -34,7 +34,7 @@ Router.post('/tripFinder', (req: express.Request, res: express.Response) => {
 
 Router.post('/dm', (req: express.Request, res: express.Response) => {
     dmRequestAction(req.body.stopId)
-        .then((dm: IDmRequest | string) => {
+        .then((dm: Array<IDmRequest> | string) => {
             res.json(dm);
         })
         .catch((err: string) => {
