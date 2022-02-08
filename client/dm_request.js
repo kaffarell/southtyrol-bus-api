@@ -12,7 +12,7 @@ function extractDataFromJson(returnBody){
         for(let i = 0; i < usefulResponse.length; i++) {
             data.push({
                 number: usefulResponse[i].servingLine.number,
-                direction: usefulResponse[i].servingLine.direction,
+                directionName: usefulResponse[i].servingLine.direction,
                 timeHour: usefulResponse[i].dateTime.hour,
                 timeMinute: usefulResponse[i].dateTime.minute,
                 realtime: usefulResponse[i].servingLine.realtime,

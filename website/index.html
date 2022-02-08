@@ -6,11 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="../client/dm_request.js"></script>
+    <script src="fillTable.js" defer></script>
     <script defer >
-        dmRequestAction("66001143").then(cool => console.log(cool));
+        // dmRequestAction("66001143").then(cool => console.log(cool));
     </script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div id="placeholder-container">
+        <h1>Hier Absenzen/Videos wie bisher</h1>
+    </div>
+
+    <div id="main-container">
+        <h1 id=title>Abfahrten Dantestraße</h1>
+
+        <table id="abfahrt-kh" >
+            <!-- <th>Richtung Krankenhaus</th> -->
+
+        </table>
+
+        <table id="abfahrt-bx" >
+            <!-- <th>Richtung Brixen</th> -->
+
+
+        </table>
+
+
+
+
+    </div>
+
 
 </body>
 </html>

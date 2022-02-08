@@ -1,0 +1,61 @@
+body{
+    background-color: darkgray;
+    display: flex;
+    justify-content: space-between;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+#placeholder-container{
+    width: 55%;
+    height: 100vh;
+
+    background-color: #C4C4C4;
+
+
+}
+
+#abfahrt-kh{
+    border: solid;
+    border-left: none;
+    border-bottom: none;
+    border-top: none;
+
+}
+
+#title {
+    grid-area: title;
+}
+
+#abfahrt-kh{
+    grid-area: abfahrt-kh;
+}
+
+
+#abfahrt-bx{
+    grid-area: abfahrt-bx;
+}
+
+
+#main-container{
+    display: grid;
+
+    grid-template-areas: 
+        "title title"
+        "abfahrt-kh abfahrt-bx"
+        "wetter wetter"
+    ;
+    align-items: start;
+    
+
+    background-color: #C4C4C4;
+    width: 35%;
+    height: 100vh;
+
+}
