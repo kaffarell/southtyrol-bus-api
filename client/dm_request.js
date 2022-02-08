@@ -16,6 +16,7 @@ function extractDataFromJson(returnBody){
                 timeHour: usefulResponse[i].dateTime.hour,
                 timeMinute: usefulResponse[i].dateTime.minute,
                 realtime: usefulResponse[i].servingLine.realtime,
+                direction: usefulResponse[i].servingLine.liErgRiProj.direction,
             });
         }
         return data;

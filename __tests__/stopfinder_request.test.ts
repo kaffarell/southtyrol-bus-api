@@ -1,7 +1,7 @@
 import { findLocationAction, stopFinderRequest } from '../src/controller/stopfinder_request';
 
 
-describe('Testing stopFinder', () => {
+describe.skip('Testing stopFinder', () => {
     test('Multiple stops', (done) => {
         findLocationAction('11.68667', '46.57504')
             .then((stop: Array<stopFinderRequest> | string) => {
