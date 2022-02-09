@@ -21,7 +21,12 @@ function extractUrlFromJson(returnBody){
 
 async function getSubredditData() {
     try{
-        let response = await fetch('https://api.reddit.com/r/memes/top?t=day');
+        let headers = new Headers({
+            'User-Agent': 'MockClient/0.1 by Me'
+        });
+        let response = await fetch('https://api.reddit.com/r/ProgrammerHumor/top?t=all&raw_json=1', {
+            headers: headers
+        });
         return response.text();
     }catch(e) {
         console.error('Error when fetching data');
