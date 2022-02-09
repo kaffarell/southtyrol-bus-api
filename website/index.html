@@ -7,11 +7,9 @@
     <title>Document</title>
     <script src="../client/dm_request.js"></script>
     <script src="../client/reddit.js"></script>
+    <script src="fillTable.js" defer></script>
+    <link rel="stylesheet" href="style.css">
     <script defer >
-        dmRequestAction("66001143").then(cool => {
-            console.log(cool);
-        });
-
         memeOfTheDayAction().then(test => {
             console.log(test);
             document.getElementById('image').src = test;
@@ -20,5 +18,45 @@
 </head>
 <body>
     <img id="image" src="" alt="">
+    <div id="flex-container">
+        <div id="placeholder-container">
+            <h1>Hier Absenzen/Videos wie bisher</h1>
+        </div>
+
+        <div id="main-container">
+            <h1 id=title>Abfahrten Dantestraße</h1>
+
+            <table id="abfahrt-kh" >
+                <th colspan="4">Richtung Krankenhaus</th>
+                <tr>
+                    <th>NR</th>
+                    <th>Richtung</th>
+                    <th>Zeit</th>
+                    <th>Verspätung</th>
+                </tr>
+
+            </table>
+
+            <table id="abfahrt-bx" >
+                <th colspan="4">Richtung Brixen</th>
+                <tr>
+                    <th>NR</th>
+                    <th>Richtung</th>
+                    <th>Zeit</th>
+                    <th>Verspätung</th>
+                </tr>
+
+
+            </table>
+
+
+
+        </div>
+    </div>
+
+    <div id="memeoftheday">
+        <img src="memeoftheday.jpeg" alt="">
+    </div>
+
 </body>
 </html>
