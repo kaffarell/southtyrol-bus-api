@@ -76,7 +76,8 @@ async function dmRequestAction(stopId: string): Promise<Array<IDmRequest> | stri
 
     const time: string = currentDate.getHours().toString().padStart(2, '0') + 
         currentDate.getMinutes().toString().padStart(2, '0');
-
+    logger.info(dateString);
+    logger.info(time);
     try {
         jsonData = await getData(stopId, dateString, time);
     } catch (error) {
@@ -97,5 +98,7 @@ async function dmRequestAction(stopId: string): Promise<Array<IDmRequest> | stri
 
 export {
     dmRequestAction,
-    IDmRequest
+    IDmRequest,
+    getData,
+    extractDataFromJson
 }
