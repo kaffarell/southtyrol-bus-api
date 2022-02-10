@@ -13,6 +13,7 @@ Modern and easy to use wrapper for the [STA (Strutture Trasporto Alto Adige) API
 ## Documentation
 Documentation can be found [here](https://github.com/kaffarell/southtyrol-bus-api/wiki)
 
+Website for the display also hosted here: https://southtyrol-bus-api.netlify.app/
  
  
 ## Setup
