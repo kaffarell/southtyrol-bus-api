@@ -1,12 +1,9 @@
 body{
-    background-color: darkgray;
+    background-color: #d4c6c6;
     justify-content: space-between;
+    height: 100vh;
 }
 
-#flex-container {
-    display: flex;
-    width: 100%;
-}
 
 * {
     margin: 0;
@@ -14,14 +11,19 @@ body{
     box-sizing: border-box;
 }
 
+table{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table tr:nth-child(odd){
+    background:#B2BEB5
+}
+table tr:nth-child(even){
+    background: #d3dad5
+}
 
 td, th{
     text-align: center;
-    border-bottom: solid;
-}
-
-tr{
-    border-bottom: solid;
 }
 
 #placeholder-container{
@@ -34,14 +36,12 @@ tr{
 }
 
 #abfahrt-kh{
-    border: solid;
-    border-left: none;
-    border-bottom: none;
-    border-top: none;
+    border-right: solid grey;
 
 }
 
 #title {
+    text-align: center;
     grid-area: title;
 }
 
@@ -54,34 +54,40 @@ tr{
     grid-area: abfahrt-bx;
 }
 
-#meme-of-the-day{
-    grid-area: meme;
-}
-
 #bus{
     grid-area: bus;
 }
 
+#title-meme{
+    grid-area: memetitle;
+    text-align: center;
+}
 
 
 #main-container{
     display: grid;
 
     grid-template-areas: 
-        "title title meme meme"
+        "title title memetitle memetitle"
         "abfahrt-kh abfahrt-bx meme meme"
-        "wetter wetter meme meme"
+        "wetter wetter bottom bottom"
     ;
     align-items: start;
     
-
-    background-color: #C4C4C4;
     width: 100%;
     height: 100vh;
 
 }
 
+
+
 #meme-of-the-day{
+    grid-area: meme;
     width: 100%;
     height: 100vh;
+}
+
+#image{
+    width: 100%;
+    height: 50vh;
 }
