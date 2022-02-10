@@ -9,8 +9,10 @@ function extractUrlFromJson(returnBody){
 
         // If there is a gif, return it, otherwise return the image
         if(usefulResponse.variants?.gif?.source?.url !== undefined) {
+            console.log("gif");
             return usefulResponse.variants.gif.source.url;
         }else {
+            console.log("image");
             return usefulResponse.source.url;
         }
 
@@ -24,7 +26,7 @@ async function getSubredditData() {
         let headers = new Headers({
             'User-Agent': 'MockClient/0.1 by Me'
         });
-        let response = await fetch('https://api.reddit.com/r/ProgrammerHumor/top?t=all&raw_json=1', {
+        let response = await fetch('https://api.reddit.com/r/memes/top?t=day&raw_json=1', {
             headers: headers
         });
         return response.text();
