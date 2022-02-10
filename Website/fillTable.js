@@ -31,14 +31,16 @@ dmRequestAction("66001143").then(data => {
 
 function parseData(data, index){
     console.log(data);
-
     let arr = [];
     arr.push(data[index].number);
     arr.push(data[index].directionName);
-    arr.push(data[index].timeHour + ":" + data[index].timeMinute);
+    if(data[index].timeMinute.length == 1)
+        arr.push(data[index].timeHour + ":" + "0" + data[index].timeMinute);
+    else
+        arr.push(data[index].timeHour + ":" + data[index].timeMinute);
     arr.push(data[index].realtime);
     arr.push(data[index].direction)
-    console.log(arr)
+    console.log(arr);
     return arr;
 
 }

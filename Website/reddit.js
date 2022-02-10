@@ -9,8 +9,10 @@ function extractUrlFromJson(returnBody){
 
         // If there is a gif, return it, otherwise return the image
         if(usefulResponse.variants?.gif?.source?.url !== undefined) {
+            console.log("gif");
             return usefulResponse.variants.gif.source.url;
         }else {
+            console.log("image");
             return usefulResponse.source.url;
         }
 

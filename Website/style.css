@@ -54,25 +54,34 @@ tr{
     grid-area: abfahrt-bx;
 }
 
+#meme-of-the-day{
+    grid-area: meme;
+}
+
+#bus{
+    grid-area: bus;
+}
+
+
 
 #main-container{
     display: grid;
 
     grid-template-areas: 
-        "title title"
-        "abfahrt-kh abfahrt-bx"
-        "wetter wetter"
+        "title title meme meme"
+        "abfahrt-kh abfahrt-bx meme meme"
+        "wetter wetter meme meme"
     ;
     align-items: start;
     
 
     background-color: #C4C4C4;
-    width: 35%;
-    height: 75vh;
+    width: 100%;
+    height: 100vh;
 
 }
 
-#memeoftheday{
+#meme-of-the-day{
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
