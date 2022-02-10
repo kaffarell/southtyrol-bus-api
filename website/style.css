@@ -1,5 +1,14 @@
+:root{
+    --main-color: #46494C;
+    --second-color: #4C5C68;
+    --highlight-color: #1985A1;
+    --grey-normal: #C5C3C6;
+    --grey-light: #DCDCDD;
+}
+
+
 body{
-    background-color: #d4c6c6;
+    background-color: var(--main-color);
     justify-content: space-between;
     height: 100vh;
     font-family: 'Open Sans', sans-serif;
@@ -12,16 +21,18 @@ body{
     box-sizing: border-box;
 }
 
+table{
+    background-color: var(--main-color) !important;
+    --bs-table-bg:var(--second-color) !important;
+}
 
-table tr:nth-child(odd){
-    background:rgb(255,255,255);
-}
-table tr:nth-child(even){
-    background: #d3dad5
-}
 
 td, th{
     text-align: center;
+}
+
+h1{
+    color: var(--grey-light);
 }
 
 #placeholder-container{
@@ -33,18 +44,16 @@ td, th{
 
 }
 
-#abfahrt-kh{
-    border-right: solid grey;
-
-}
-
 #title {
     text-align: center;
     grid-area: title;
+    padding-top: 0.5rem;
 }
 
 #abfahrt-kh{
     grid-area: abfahrt-kh;
+    /* border-right: solid grey; */
+
 }
 
 
@@ -58,12 +67,21 @@ td, th{
 
 #title-meme{
     grid-area: memetitle;
+    padding-top: .5rem;
+    text-align: center;
 }
 
 #leaderboard{
     grid-area: leaderboard;
     width: 100%;
+    height: 100%;
 }
+
+/* #absenzen{
+    grid-area: absenzen;
+    width: 100%;
+    height: 100%;
+} */
 
 
 #main-container{
@@ -72,7 +90,7 @@ td, th{
     grid-template-areas: 
         "title title . memetitle"
         "abfahrt-kh abfahrt-bx . meme"
-        "leaderboard . . bottom"
+        "leaderboard absenzen absenzen absenzen"
     ;
     grid-template-rows: 5% 45% 50%;
     grid-template-columns: auto auto auto auto;
@@ -86,9 +104,16 @@ td, th{
 
 #meme-of-the-day{
     grid-area: meme;
+    height: 100%;
 }
 
 #image{
     width: 100%;
-    height: 50vh;
+    height: 100%;
+}
+
+
+
+#leaders{
+ font-size: 1cm !important;   
 }
