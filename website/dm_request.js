@@ -26,9 +26,9 @@ function extractDataFromJson(returnBody){
 }
 
 async function getData(stopId, date, time) {
-    //http://efa.sta.bz.it/apb/XML_DM_REQUEST?useRealtime=1&locationServerActive=1&mode=direct&useAllStops=1&limit=10&itdDate=20220201&itdTime=1246&itdTripDateTimeDepArr=dep&ptOptionsActive=0&imparedOptionsActive=0&changeSpeed=normal&lineRestriction=400&maxChanges=9&routeType=leasttime&name_dm=6600218&type_dm=stop&outputFormat=JSON
+    //https://efa.sta.bz.it/apb/XML_DM_REQUEST?useRealtime=1&locationServerActive=1&mode=direct&useAllStops=1&limit=10&itdDate=20220201&itdTime=1246&itdTripDateTimeDepArr=dep&ptOptionsActive=0&imparedOptionsActive=0&changeSpeed=normal&lineRestriction=400&maxChanges=9&routeType=leasttime&name_dm=6600218&type_dm=stop&outputFormat=JSON
     try{
-        let response = await fetch(`http://efa.sta.bz.it/apb/XML_DM_REQUEST?useRealtime=1&locationServerActive=1&mode=direct&useAllStops=1&limit=10&itdDate=${date}&itdTime=${time}&itdTripDateTimeDepArr=dep&ptOptionsActive=0&imparedOptionsActive=0&changeSpeed=normal&lineRestriction=400&maxChanges=9&routeType=leasttime&name_dm=${stopId}&type_dm=stop&outputFormat=JSON`)
+        let response = await fetch(`https://efa.sta.bz.it/apb/XML_DM_REQUEST?useRealtime=1&locationServerActive=1&mode=direct&useAllStops=1&limit=10&itdDate=${date}&itdTime=${time}&itdTripDateTimeDepArr=dep&ptOptionsActive=0&imparedOptionsActive=0&changeSpeed=normal&lineRestriction=400&maxChanges=9&routeType=leasttime&name_dm=${stopId}&type_dm=stop&outputFormat=JSON`)
         return response.text();
     }catch(e) {
         console.error('Error when fetching data');
