@@ -26,6 +26,10 @@ td, th{
     text-align: center;
 }
 
+h1{
+    text-align: center;
+}
+
 #placeholder-container{
     width: 55%;
     height: 75vh;

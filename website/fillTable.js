@@ -38,7 +38,10 @@ function parseData(data, index){
         arr.push(data[index].timeHour + ":" + "0" + data[index].timeMinute);
     else
         arr.push(data[index].timeHour + ":" + data[index].timeMinute);
-    arr.push(data[index].realtime);
+    if(data[index].realtime == 0)
+        arr.push("-")
+    else
+        arr.push(data[index].realtime + "min");
     arr.push(data[index].direction)
     console.log(arr);
     return arr;
