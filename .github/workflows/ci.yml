@@ -9,6 +9,7 @@ on:
     branches:
       - master
       - dev 
+      - school
     
   pull_request:
     branches: 
