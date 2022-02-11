@@ -16,9 +16,9 @@ dmRequestAction("66001143").then(data => {
                 td.innerText = parsedData[i];
                 console.log("Richtung: " + parsedData[4]);
                 if(parsedData[4] == "H")
-                    trKH.appendChild(td);
-                else
                     trBX.appendChild(td);
+                else
+                    trKH.appendChild(td);
             }
             if(trBX.innerHTML.length !== 0)
                 tbodyBX.appendChild(trBX);

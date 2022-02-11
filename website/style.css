@@ -23,7 +23,9 @@ body{
 
 table{
     background-color: var(--main-color) !important;
-    --bs-table-bg:var(--second-color) !important;
+    --bs-table-bg:var(--second-color) !important;   
+    font-size: 1.5vw;
+
 }
 
 
@@ -33,6 +35,8 @@ td, th{
 
 h1{
     color: var(--grey-light);
+    font-size: 2.5vw;
+
 }
 
 #placeholder-container{
@@ -47,7 +51,7 @@ h1{
 #title {
     text-align: center;
     grid-area: title;
-    padding-top: 0.5rem;
+    /* padding-top: 0.2rem; */
 }
 
 #abfahrt-kh{
@@ -67,14 +71,28 @@ h1{
 
 #title-meme{
     grid-area: memetitle;
-    padding-top: .5rem;
+    /* padding-top: .2rem; */
     text-align: center;
 }
 
-#leaderboard{
+#container{
     grid-area: leaderboard;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+}
+
+#leaderboard{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
     height: 100%;
+
 }
 
 /* #absenzen{
@@ -113,7 +131,3 @@ h1{
 }
 
 
-
-#leaders{
- font-size: 1cm !important;   
-}
