@@ -14,10 +14,11 @@ Modern and easy to use wrapper for the [STA (Strutture Trasporto Alto Adige) API
 Documentation can be found [here](https://github.com/kaffarell/southtyrol-bus-api/wiki)
 
  
- 
 ## Setup
  * Install npm and nodeJS
  * Execute `npm install`
  * Execute `npm run build` to transpile ts and run the linter
- * Execute `npm start` to run the app
+ * Execute `npm start` to run the app  
+ 
+The API is also hosted on heroku here: https://southtyrol-bus-api.herokuapp.com/  
 
