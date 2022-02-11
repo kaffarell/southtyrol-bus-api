@@ -26,7 +26,7 @@ async function getSubredditData() {
         let headers = new Headers({
             'User-Agent': 'MockClient/0.1 by Me'
         });
-        let response = await fetch('https://api.reddit.com/r/ProgrammerHumor/top?t=day&raw_json=1', {
+        let response = await fetch('https://api.reddit.com/r/memes/top?t=day&raw_json=1', {
             headers: headers
         });
         return response.text();

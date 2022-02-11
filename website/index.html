@@ -24,38 +24,46 @@
 
 
     <div id="main-container">
-        <h1 id=title>Abfahrten Dantestraße</h1>
-        <table id="abfahrt-kh" class="table table-dark" >
-            <thead class="thead-dark">
-                <th colspan="4">Richtung Krankenhaus</th>
-                <tr>
-                    <th>NR</th>
-                    <th>Richtung</th>
-                    <th>Zeit</th>
-                    <th>Verspätung</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="bus-container">
+            <h1 id=title>Abfahrten Dantestraße</h1>
+            <table id="abfahrt-kh" class="table table-dark" >
+                <thead class="thead-dark">
+                    <th colspan="4">Richtung Krankenhaus</th>
+                    <tr>
+                        <th>NR</th>
+                        <th>Richtung</th>
+                        <th>Zeit</th>
+                        <th>Verspätung</th>
+                    </tr>
+                </thead>
+            </table>
 
-        <table id="abfahrt-bx" class="table table-dark" >
-            <thead class="thead-dark">    
-                <th colspan="4">Richtung Brixen</th>
-                <tr>
-                    <th>NR</th>
-                    <th>Richtung</th>
-                    <th>Zeit</th>
-                    <th>Verspätung</th>
-                </tr>
-            </thead>
-        </table>
-        
-        <h1 id="title-meme">Meme of the day</h1>
-
-        <div id="meme-of-the-day">
-            <img id="image" src="memeoftheday.jpeg" alt="">
+            <table id="abfahrt-bx" class="table table-dark" >
+                <thead class="thead-dark">    
+                    <th colspan="4">Richtung Brixen</th>
+                    <tr>
+                        <th>NR</th>
+                        <th>Richtung</th>
+                        <th>Zeit</th>
+                        <th>Verspätung</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-        <div id="container">
-            <iframe id="leaderboard" src="https://teacher-of-the-week.herokuapp.com/leaderboard.html"></iframe>
+        
+        <div class="side-panel">
+            <div class="meme-container">
+                <h1 id="title-meme">Meme of the day</h1>
+
+                <div id="meme-of-the-day">
+                    <img id="image" src="memeoftheday.jpeg" alt="">
+                </div>
+            </div>
+
+            <div class="leaderboard-container">
+                <iframe id="leaderboard" src="https://teacher-of-the-week.herokuapp.com/leaderboard.html"></iframe>
+            </div>
+
         </div>
         
         <!-- <iframe id="absenzen" src="https://www.fallmerayer.it/screen/" frameborder="0"></iframe> -->
