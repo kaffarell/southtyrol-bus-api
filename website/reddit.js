@@ -1,20 +1,28 @@
 function extractUrlFromJson(returnBody){
     try{
-        const usefulResponse = JSON.parse(returnBody).data.children[0].data.preview.images[0];
+        let usefulResponse = JSON.parse(returnBody).data;
         
         if(usefulResponse == null) {
             console.error('No useful data found in response');
             return "";
         }
 
-        // If there is a gif, return it, otherwise return the image
-        if(usefulResponse.variants?.gif?.source?.url !== undefined) {
-            console.log("gif");
-            return usefulResponse.variants.gif.source.url;
-        }else {
-            console.log("image");
-            return usefulResponse.source.url;
+        // Go trough the top memes of the and get first one which is not a video
+        let counter = 0;
+        while(usefulResponse.children[counter].data.is_video === true || usefulResponse.children[counter].data.post_hint !== 'image') {
+            // If first 10 posts are videos, then fail
+            if(counter > 10) {
+                console.error('No gif or image found in the top 10 posts');
+                return "";
+            }
+            counter++;
         }
+
+        usefulResponse = usefulResponse.children[counter].data;
+
+        // Returns the url of the image in the post
+        // Makes no difference if the image is a normal image or a gif
+        return usefulResponse.url;
 
     }catch(e) {
         console.error(e);

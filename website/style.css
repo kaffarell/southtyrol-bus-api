@@ -51,6 +51,7 @@ h1{
 
 #image {
     min-width: 90%;
+    max-width: 90%;
 }
 
 #leaderboard {
