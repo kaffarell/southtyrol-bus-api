@@ -50,8 +50,8 @@ h1{
 }
 
 #image {
-    min-width: 90%;
-    max-width: 90%;
+    min-width: 60%;
+    max-width: 60%;
 }
 
 #leaderboard {
@@ -85,7 +85,6 @@ h1{
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
     padding: 2vmin;
 }
 
