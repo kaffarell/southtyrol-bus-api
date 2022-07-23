@@ -17,7 +17,7 @@ describe('Testing dm request', () => {
                         },
                         */
                         expect(output[0].number).toEqual('401');
-                        expect(output[0].directionName).toEqual('Bruneck, Busbahnhof');
+                        expect(output[0].directionName).toEqual('Brunico, Via Europa');
                         expect(output[0].timeHour).toEqual('8');
                         expect(output[0].timeMinute).toEqual('24');
                         expect(output[0].realtime).toEqual('0');
@@ -33,7 +33,7 @@ describe('Testing dm request', () => {
                         },
                         */
                         expect(output[1].number).toEqual('320.1');
-                        expect(output[1].directionName).toEqual('Milland, Zeffer');
+                        expect(output[1].directionName).toEqual('Millan, Zeffer');
                         expect(output[1].timeHour).toEqual('8');
                         expect(output[1].timeMinute).toEqual('24');
                         expect(output[1].realtime).toEqual('0');
@@ -65,7 +65,7 @@ describe('Testing dm request', () => {
                         },
                         */
                         expect(output[0].number).toEqual('401');
-                        expect(output[0].directionName).toEqual('Brixen, Progress');
+                        expect(output[0].directionName).toEqual('Bressanone, Progress');
                         expect(output[0].timeHour).toEqual('8');
                         expect(output[0].timeMinute).toEqual('32');
                         expect(output[0].realtime).toEqual('0');
@@ -81,7 +81,7 @@ describe('Testing dm request', () => {
                         },
                         */
                         expect(output[1].number).toEqual('320.1');
-                        expect(output[1].directionName).toEqual('Vahrn, Post');
+                        expect(output[1].directionName).toEqual('Varna, Posta');
                         expect(output[1].timeHour).toEqual('8');
                         expect(output[1].timeMinute).toEqual('34');
                         expect(output[1].realtime).toEqual('0');
